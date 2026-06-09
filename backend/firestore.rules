@@ -1,0 +1,63 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if the requesting user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Helper: get the requesting user's uid
+    function uid() {
+      return request.auth.uid;
+    }
+
+    // Helper: check if the user owns a document by uid field
+    function isOwner(userId) {
+      return isAuth() && userId == uid();
+    }
+
+    // ─── USERS ───────────────────────────────────────────────────────
+    // Each user can read and write only their own profile document.
+    // Users can read any user's data for leaderboard display.
+    match /users/{userId} {
+      allow read: if true; // public read for leaderboard
+      allow write: if isOwner(userId);
+      allow create: if isAuth() && request.resource.data.uid == uid();
+
+      // Subcollections: cart, etc.
+      match /{document=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // ─── PRODUCTS ────────────────────────────────────────────────────
+    // Public read — anyone can browse the catalog without signing in.
+    // Write restricted to admins or seed scripts.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuth() && request.auth.token.admin == true;
+    }
+
+    // ─── ORDERS ──────────────────────────────────────────────────────
+    match /orders/{orderId} {
+      allow read: if isAuth() && resource.data.uid == uid();
+      allow create: if isAuth() && request.resource.data.uid == uid();
+      allow update, delete: if isAuth() && resource.data.uid == uid();
+    }
+
+    // ─── REVIEWS ─────────────────────────────────────────────────────
+    // Public read for product reviews. Write only by the owning user.
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuth() && request.resource.data.uid == uid();
+      allow update, delete: if isAuth() && resource.data.uid == uid();
+    }
+
+    // ─── DENY ALL OTHER ACCESS ───────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
