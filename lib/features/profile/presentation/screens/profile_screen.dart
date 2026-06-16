@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopease/core/theme/app_theme.dart';
 import 'package:shopease/core/utils/formatter.dart';
+import 'package:shopease/core/utils/image_utils.dart';
 import 'package:shopease/core/services/storage_services.dart';
 import 'package:shopease/features/auth/domain/entities/user.dart';
 import 'package:shopease/features/checkout/domain/entities/order.dart';
@@ -64,7 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       maxHeight: 512,
     );
     if (file != null) {
-      context.read<ProfileBloc>().add(UpdateAvatar(file.path));
+      final bytes = await file.readAsBytes();
+      if (!mounted) return;
+      context.read<ProfileBloc>().add(UpdateAvatar(bytes));
     }
   }
 
@@ -150,10 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 54.w,
                       backgroundColor: AppColors.surface,
-                      backgroundImage: profile.avatarUrl != null &&
-                              profile.avatarUrl!.isNotEmpty
-                          ? CachedNetworkImageProvider(profile.avatarUrl!)
-                          : null,
+                      backgroundImage: avatarImageProvider(profile.avatarUrl),
                       child: profile.avatarUrl == null ||
                               profile.avatarUrl!.isEmpty
                           ? Text(

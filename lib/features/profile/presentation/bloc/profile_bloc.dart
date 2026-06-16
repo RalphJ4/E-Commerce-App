@@ -42,7 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         profile: current.profile,
         orders: current.orders,
       ));
-      final result = await updateAvatarUseCase.call(event.filePath, current.profile.uid);
+      final result = await updateAvatarUseCase.call(current.profile.uid, event.imageBytes);
       result.fold(
         (failure) => emit(ProfileError(failure.message)),
         (avatarUrl) {

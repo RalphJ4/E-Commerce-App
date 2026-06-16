@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopease/core/theme/app_theme.dart';
+import 'package:shopease/core/utils/image_utils.dart';
 import 'package:shopease/core/utils/responsive.dart';
 import 'package:shopease/features/home/presentation/bloc/home_bloc.dart';
 import 'package:shopease/features/home/presentation/bloc/home_event.dart';
@@ -113,10 +114,7 @@ class HomeScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 20.r,
                             backgroundColor: AppColors.surface,
-                            backgroundImage: user?.avatarUrl != null &&
-                                    user!.avatarUrl.isNotEmpty
-                                ? NetworkImage(user.avatarUrl)
-                                : null,
+                            backgroundImage: avatarImageProvider(user?.avatarUrl),
                             child: user?.avatarUrl == null ||
                                     user!.avatarUrl.isEmpty
                                 ? Icon(
@@ -128,18 +126,20 @@ class HomeScreen extends StatelessWidget {
                           ),
                           SizedBox(width: 10.w),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            child: Row(
                               children: [
-                                Text(
-                                  'Hello, ${user?.displayName ?? 'Shopper'}!',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.white,
+                                Flexible(
+                                  child: Text(
+                                    'Hello, ${user?.displayName ?? 'Shopper'}!',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.white,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
+                                SizedBox(width: 4.w),
                                 Text(
                                   'Ready to discover?',
                                   style: GoogleFonts.plusJakartaSans(

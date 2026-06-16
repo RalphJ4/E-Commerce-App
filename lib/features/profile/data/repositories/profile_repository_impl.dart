@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:dartz/dartz.dart' hide Order;
 import 'package:shopease/core/errors/failures.dart';
 import 'package:shopease/features/auth/domain/entities/user.dart';
@@ -22,9 +23,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<Failure, String>> updateAvatar(
-      String uid, String filePath) async {
+      String uid, Uint8List imageBytes) async {
     try {
-      final url = await remoteDataSource.uploadAvatar(uid, filePath);
+      final url = await remoteDataSource.uploadAvatar(uid, imageBytes);
       return Right(url);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

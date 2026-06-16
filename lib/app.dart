@@ -235,6 +235,11 @@ class _MainShellState extends State<_MainShell> {
     });
   }
 
+  void _goToHome() {
+    context.read<HomeBloc>().add(const RefreshHome());
+    widget.navigationShell.goBranch(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -246,7 +251,12 @@ class _MainShellState extends State<_MainShell> {
                 currentIndex: widget.navigationShell.currentIndex,
                 xp: _xp,
                 level: _level,
-                onTap: widget.navigationShell.goBranch,
+                onTap: (index) {
+                  if (index == 0) {
+                    context.read<HomeBloc>().add(const RefreshHome());
+                  }
+                  widget.navigationShell.goBranch(index);
+                },
               ),
               Expanded(child: widget.navigationShell),
             ],
@@ -275,7 +285,7 @@ class _MainShellState extends State<_MainShell> {
                           activeIcon: Icons.home,
                           label: 'Home',
                           isSelected: widget.navigationShell.currentIndex == 0,
-                          onTap: () => widget.navigationShell.goBranch(0),
+                          onTap: _goToHome,
                         ),
                         _NavItem(
                           icon: Icons.search_outlined,

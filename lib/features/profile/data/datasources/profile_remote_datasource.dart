@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:shopease/core/constants/app_constants.dart';
@@ -8,7 +8,7 @@ import 'package:shopease/features/checkout/domain/entities/order.dart';
 
 abstract class ProfileRemoteDataSource {
   Future<User> getProfile(String uid);
-  Future<String> uploadAvatar(String uid, String filePath);
+  Future<String> uploadAvatar(String uid, Uint8List imageBytes);
   Future<List<Order>> getOrderHistory(String uid);
 }
 
@@ -38,10 +38,8 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<String> uploadAvatar(String uid, String filePath) async {
-    final file = File(filePath);
-    final bytes = await file.readAsBytes();
-    final base64Image = base64Encode(bytes);
+  Future<String> uploadAvatar(String uid, Uint8List imageBytes) async {
+    final base64Image = base64Encode(imageBytes);
     final dataUri = 'data:image/jpeg;base64,$base64Image';
 
     await firestore
