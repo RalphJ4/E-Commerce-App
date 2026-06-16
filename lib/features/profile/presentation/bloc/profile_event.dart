@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 sealed class ProfileEvent extends Equatable {
@@ -17,12 +18,12 @@ final class LoadProfile extends ProfileEvent {
 }
 
 final class UpdateAvatar extends ProfileEvent {
-  final String filePath;
+  final Uint8List imageBytes;
 
-  const UpdateAvatar(this.filePath);
+  const UpdateAvatar(this.imageBytes);
 
   @override
-  List<Object?> get props => [filePath];
+  List<Object?> get props => [imageBytes];
 }
 
 final class LoadOrderHistory extends ProfileEvent {

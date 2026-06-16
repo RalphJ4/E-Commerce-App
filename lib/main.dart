@@ -32,7 +32,6 @@ void main() async {
     );
     return;
   }
-
   await initDependencies();
   runApp(App());
 }
