@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopease/core/theme/app_theme.dart';
 import 'package:shopease/core/utils/formatter.dart';
@@ -464,7 +465,7 @@ class _CartBottomSheet extends StatelessWidget {
               width: double.infinity,
               height: 52.h,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => context.push('/checkout'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.white,
