@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopease/core/theme/app_theme.dart';
 import 'package:shopease/core/utils/image_utils.dart';
@@ -295,7 +296,7 @@ class HomeScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              Icons.search_off_rounded,
+                              Icons.inventory_2_outlined,
                               size: 48.sp,
                               color: AppColors.white30,
                             ),
@@ -329,7 +330,7 @@ class HomeScreen extends StatelessWidget {
                         (context, index) {
                           return ProductCard(
                             product: displayProducts[index],
-                            onTap: () {},
+                            onTap: () => context.push('/product/${displayProducts[index].id}'),
                           );
                         },
                         childCount: displayProducts.length,

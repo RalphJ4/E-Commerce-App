@@ -65,7 +65,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => sl<AuthBloc>()..add(const CheckAuthStatus())),
-            BlocProvider(create: (_) => sl<HomeBloc>()..add(const LoadHome())),
+            BlocProvider(create: (_) => sl<HomeBloc>()),
             BlocProvider(create: (_) => sl<CartBloc>()),
             BlocProvider(create: (_) => sl<ProfileBloc>()),
           ],

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shopease/app.dart';
-import 'package:shopease/core/constants/app_constants.dart';
 import 'package:shopease/di/service_locator.dart';
 import 'package:shopease/firebase_options.dart';
 
@@ -34,6 +32,7 @@ void main() async {
     );
     return;
   }
+
   await initDependencies();
   runApp(App());
 }

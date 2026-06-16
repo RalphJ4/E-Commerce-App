@@ -102,4 +102,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       add(const LoadHome());
     }
   }
+
 }

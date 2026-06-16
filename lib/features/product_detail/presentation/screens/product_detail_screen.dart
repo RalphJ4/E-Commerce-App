@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopease/core/theme/app_theme.dart';
 import 'package:shopease/core/utils/formatter.dart';
@@ -49,7 +50,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+      body: BlocConsumer<ProductDetailBloc, ProductDetailState>(
+        listener: (context, state) {
+          if (state is ProductDetailAddedToCart) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Added to cart!'),
+                backgroundColor: AppColors.primary,
+                behavior: SnackBarBehavior.floating,
+                duration: 2.seconds,
+              ),
+            );
+            context.pop();
+          }
+        },
         builder: (context, state) {
           if (state is ProductDetailLoading) {
             return const Center(
